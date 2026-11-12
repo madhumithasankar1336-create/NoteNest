@@ -1,33 +1,31 @@
-# NoteNest
-Full Stack Development Internship at VirtualWorks by Noivrn | Hands-on tasks, projects, and practical learning.
-# VirtualWorks – Full Stack Development Internship 🚀
+# NoteNest – Smart Notes Manager
+React (Vite) + Flask + SQLite. A WebGL fluid GlowCursor renders as the live background.
 
-## About
-This repository contains the tasks and projects completed during my Full Stack Development Internship at VirtualWorks by Noivrn.
+## Setup
+### 1. Backend (Python 3.9+)
+    cd backend
+    python -m venv venv
+    # Windows: venv\Scripts\activate    macOS/Linux: source venv/bin/activate
+    pip install -r requirements.txt
+    python app.py            # http://127.0.0.1:5000  (creates notes.db automatically)
 
-## Internship Details
-- **Role:** Full Stack Development Intern
-- **Organization:** VirtualWorks by Noivrn
-- **Duration:** 11 November 2026 – 26 December 2026
-- **Mode:** Remote
+### 2. Frontend (Node 18+) – in a second terminal
+    cd frontend
+    npm install
+    npm run dev              # http://localhost:5173  (proxies /api to Flask)
 
-## Technologies
-- HTML
-- CSS
-- JavaScript
-- React.js
-- Python
-- Flask
-- SQLite
+## Test in the browser
+Create a note -> refresh the page (still there) -> Edit -> Pin -> Archive -> Delete (confirm).
+Stop and restart `python app.py`; notes remain because they live in `backend/notes.db`.
 
-## Tasks
-### Task 1 – Quick Note Application
-A simple note-taking application where users can create, save, view, edit and delete notes using a Python backend and SQLite database.
+## Test the API
+    curl -X POST http://127.0.0.1:5000/api/notes -H "Content-Type: application/json" -d '{"title":"Hello","content":"First note","category":"Work","tags":["demo"],"color":"#e9e3ff"}'
+    curl http://127.0.0.1:5000/api/notes
+    curl http://127.0.0.1:5000/api/notes/1
+    curl -X PUT http://127.0.0.1:5000/api/notes/1 -H "Content-Type: application/json" -d '{"title":"Hello v2"}'
+    curl -X PATCH http://127.0.0.1:5000/api/notes/1/pin
+    curl -X PATCH http://127.0.0.1:5000/api/notes/1/archive
+    curl -X DELETE http://127.0.0.1:5000/api/notes/1
+    curl -X POST http://127.0.0.1:5000/api/notes -H "Content-Type: application/json" -d '{"title":"","content":""}'   # 400 validation error
 
-## Objective
-To improve my full-stack development skills through practical tasks and real-world projects.
-
-## Author
-**Madhumitha S**
-
-Happy Coding! 💻✨
+Only the light/dark preference is kept in localStorage; all notes are stored in SQLite.
